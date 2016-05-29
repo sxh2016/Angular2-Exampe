@@ -1,0 +1,46 @@
+public class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> list = new ArrayList<String>();
+        if(lower > upper) return list;
+        int len = nums.length;
+        int index = 0;
+        if(nums == null || len == 0){
+            if(lower == upper) list.add(Integer.toString(lower));
+            else list.add(Integer.toString(lower) + "->" + Integer.toString(upper));
+            return list;
+        }
+        if(nums[0] > lower){
+            if(nums[0] == lower + 1) list.add(Integer.toString(lower));
+            else list.add(Integer.toString(lower) + "->" + Integer.toString(nums[0] - 1));
+        }
+        while(index < len - 1){
+            if(nums[index + 1] == nums[index] + 1) index++;
+            else{
+                int begin = nums[index] + 1;
+                int end = nums[index + 1] - 1;
+                String ranges = new String();
+                if(begin == end){
+                    ranges = Integer.toString(begin);
+                    list.add(ranges);
+                }
+                else{
+                    ranges = Integer.toString(begin) + "->" + Integer.toString(end);
+                    list.add(ranges);
+                }
+                index++;
+            }
+        }
+        if(upper > nums[len - 1]){
+            if(nums[len - 1] == upper - 1) list.add(Integer.toString(upper));
+            else list.add(Integer.toString(nums[len - 1] + 1) + "->" + Integer.toString(upper));
+        }
+        return list;
+    }
+}
+
+/*
+Analysis:
+(1) nums may be null, and lower may bigger than upper;
+(2) should consider that nums[0] is smaller than lower and nums[len - 1] is bigger than upper;
+(3) using two pointer to mantain the ranges.
+*/
